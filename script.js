@@ -12,6 +12,54 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 
 const arabicDigits = new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 0 });
 
+const themeIcons = {
+  moon: `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 14.2A8.8 8.8 0 0 1 9.8 3a7 7 0 1 0 11.2 11.2z"></path>
+    </svg>
+  `,
+  sun: `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+    </svg>
+  `
+};
+
+function renderThemeToggle(toggleBtn, isDark) {
+  const icon = toggleBtn.querySelector(".theme-icon");
+  const nextLabel = isDark ? "تفعيل الوضع النهاري" : "تفعيل الوضع الليلي";
+
+  toggleBtn.setAttribute("aria-label", nextLabel);
+
+  if (icon) {
+    icon.innerHTML = isDark ? themeIcons.sun : themeIcons.moon;
+  }
+}
+
+function initThemeToggle() {
+  const toggleBtn = document.querySelector(".theme-toggle");
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+
+  if (!toggleBtn) return;
+
+  renderThemeToggle(toggleBtn, document.body.classList.contains("dark-mode"));
+
+  toggleBtn.addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    renderThemeToggle(toggleBtn, isDark);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initThemeToggle);
+
 function setMenu(open) {
   navLinks.classList.toggle("is-open", open);
   document.body.classList.toggle("menu-open", open);
