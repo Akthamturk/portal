@@ -8,6 +8,7 @@ const complaintMessage = document.getElementById("complaintMessage");
 const fileInput = document.getElementById("photoInput");
 const fileLabel = document.getElementById("fileLabel");
 const locationButton = document.getElementById("locationButton");
+const areaInput = document.getElementById("areaInput");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const arabicDigits = new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 0 });
@@ -119,12 +120,15 @@ if (fileInput && fileLabel) {
 if (locationButton) {
   locationButton.addEventListener("click", () => {
     locationButton.textContent = "تم تحديد الموقع التقريبي";
+
+    if (areaInput) {
+      areaInput.value = "تم تحديد الموقع التقريبي";
+    }
   });
 }
 
 if (complaintForm) {
   complaintForm.addEventListener("submit", (event) => {
-    event.preventDefault();
     const requiredFields = complaintForm.querySelectorAll("[required]");
     let valid = true;
 
@@ -135,14 +139,9 @@ if (complaintForm) {
     });
 
     if (!valid) {
+      event.preventDefault();
       complaintMessage.textContent = "يرجى تعبئة الحقول المطلوبة قبل الإرسال.";
-      return;
     }
-
-    complaintMessage.textContent = "تم استلام الشكوى بنجاح، وسيتم إرسال رقم المتابعة عبر الهاتف.";
-    complaintForm.reset();
-    fileLabel.textContent = "اختيار صورة";
-    locationButton.textContent = "تحديد الموقع التقريبي";
   });
 }
 
@@ -297,17 +296,6 @@ if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {
     .from(".hero-subtitle", { y: 32, opacity: 0 }, "-=0.55")
     .from(".hero-description", { y: 28, opacity: 0 }, "-=0.5")
     .from(".hero-actions .btn", { y: 24, opacity: 0, stagger: 0.12 }, "-=0.45");
-
-  gsap.to(".float-shape", {
-    y: 12,
-    x: 6,
-    rotation: 1.5,
-    duration: 4.6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    stagger: 0.45
-  });
 
   gsap.utils.toArray(".reveal").forEach((element) => {
     gsap.from(element, {

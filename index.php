@@ -29,6 +29,7 @@
         <li><a href="#news">الأخبار والإعلانات</a></li>
         <li><a href="#map">الخريطة</a></li>
         <li><a href="#contact">تواصل معنا</a></li>
+        <li><a class="admin-login-btn" href="admin-login.php">دخول الموظفين</a></li>
         <li class="theme-toggle-item">
           <button class="theme-toggle" type="button" aria-label="تفعيل الوضع الليلي">
             <span class="theme-icon" aria-hidden="true"></span>
@@ -41,30 +42,6 @@
   <main>
     <section class="hero" id="home">
       <div class="hero-overlay"></div>
-      <div class="float-shape float-card shape-one" aria-hidden="true">
-        <span class="float-icon">
-          <svg viewBox="0 0 24 24"><path d="M5 5h14v10H8l-3 3V5zM9 9h6M9 12h4"/></svg>
-        </span>
-        <span>شكاوى</span>
-      </div>
-      <div class="float-shape float-card shape-two" aria-hidden="true">
-        <span class="float-icon">
-          <svg viewBox="0 0 24 24"><path d="M7 3h10v18l-2-1-2 1-2-1-2 1-2-1V3zM10 8h4M10 12h4M10 16h2"/></svg>
-        </span>
-        <span>فواتير</span>
-      </div>
-      <div class="float-shape float-card shape-three" aria-hidden="true">
-        <span class="float-icon">
-          <svg viewBox="0 0 24 24"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3zM9 3v15M15 6v15"/></svg>
-        </span>
-        <span>خريطة</span>
-      </div>
-      <div class="float-shape float-card shape-four" aria-hidden="true">
-        <span class="float-icon">
-          <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6zM15 3v4h4M9 12h6M9 16h6"/></svg>
-        </span>
-        <span>رخص</span>
-      </div>
 
       <div class="hero-content">
         <p class="hero-kicker">بلدية قباطية</p>
@@ -204,11 +181,11 @@
           </div>
         </div>
 
-        <form class="portal-form complaint-form reveal" id="complaintForm" novalidate>
+        <form class="portal-form complaint-form reveal" id="complaintForm" action="backend/submit-complaint.php" method="POST" enctype="multipart/form-data" novalidate>
           <div class="form-grid">
             <label>
               <span>الاسم الكامل</span>
-              <input type="text" name="fullName" required>
+              <input type="text" name="citizen_name" required>
             </label>
             <label>
               <span>رقم الهاتف</span>
@@ -216,7 +193,7 @@
             </label>
             <label>
               <span>نوع الشكوى</span>
-              <select name="complaintType" required>
+              <select name="complaint_type" required>
                 <option value="">اختر نوع الشكوى</option>
                 <option>نفايات ونظافة</option>
                 <option>طرق وأرصفة</option>
@@ -227,20 +204,21 @@
             </label>
             <label>
               <span>رفع صورة</span>
-              <input class="file-input" type="file" name="photo" id="photoInput" accept="image/*">
+              <input class="file-input" type="file" name="complaint_image" id="photoInput" accept="image/*">
               <span class="file-label" id="fileLabel">اختيار صورة</span>
             </label>
             <label class="full-row">
               <span>وصف المشكلة</span>
-              <textarea name="details" rows="5" required></textarea>
+              <textarea name="description" rows="5" required></textarea>
             </label>
             <div class="full-row location-row">
               <span>تحديد الموقع</span>
               <button class="location-button" type="button" id="locationButton">تحديد الموقع التقريبي</button>
+              <input type="hidden" name="area" id="areaInput" value="غير محدد">
             </div>
           </div>
           <button class="btn btn-primary form-submit" type="submit">إرسال الشكوى</button>
-          <p class="form-message" id="complaintMessage" role="status"></p>
+          <p class="form-message" id="complaintMessage" role="status"><?php echo (isset($_GET["complaint"]) && $_GET["complaint"] === "success") ? "تم استلام الشكوى بنجاح." : ""; ?></p>
         </form>
       </div>
     </section>

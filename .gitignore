@@ -1,0 +1,12 @@
+uploads/complaints/*
+!uploads/complaints/.gitkeep
+
+*.sql
+.env
+.DS_Store
+Thumbs.db
+
+setup-db.php
+setup-admin.php
+test-db.php
+check-complaints.php
